@@ -1,0 +1,63 @@
+.wrap {
+    background-color: #FFF;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border: 1px solid #e5e5e5;
+    border-radius: 0.3rem;
+    padding: 1rem;
+    margin-top: 2rem;
+    width: auto;
+}
+
+.table_style{
+    background-color: #f5f5f5;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    width: 100%;
+}
+
+.table_style thead th{
+    padding: 2px;
+    text-align: center;
+    border-bottom: 1px solid #bcbcbc;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    padding: .5rem .8rem;
+}
+
+/* Estilos para formularios */
+
+.form-wpchem div + div {
+    margin-top: 1.2em;
+}
+
+.form-wpchem {
+    margin-top: 2em;
+}
+
+.form-wpchem label {
+    display: inline-block;
+    width: 90px;
+    text-align: left;
+}
+
+.form-wpchem input, textarea {
+    /* Para darle el mismo tamaño a todos los campos de texto */
+    width: 300px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    /* Para armonizar el look&feel del borde en los campos de texto */
+    border: 1px solid #999;
+}
+
+.form-wpchem textarea {
+    /* Para alinear campos de texto multilínea con sus labels */
+    vertical-align: top;
+
+    /* Para dar suficiente espacio para escribir texto */
+    height: 5em;
+
+    /* Para permitir a los usuarios cambiar el tamaño de cualquier textarea verticalmente
+        No funciona en todos los navegadores */
+    resize: vertical;
+}
