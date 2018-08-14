@@ -1,0 +1,453 @@
+/*
+Theme Name: ASQUIMCO-theme
+Author: Angie Espitia
+Author URI: https://asquimco.org/
+Description: Tema para asquimco
+Version: 1.0
+Tags: one-column, two-columns, accessibility-ready, custom-colors, custom-header, custom-menu, editor-style, featured-images, footer-widgets, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Oswald:300,400,500,600&subset=latin-ext');
+body {
+  padding-bottom: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+.textwidget {
+    margin-top: 0%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+.bg-trans{
+    background-color:#FFF;
+      color:#CC0000;
+      position:absolute;
+      text-align:center;
+      top:0px;
+      padding: 15% 10% 93% 12%;
+      font-size:65px;
+      font-weight:bold;
+      width: 100%;
+}
+.navbar {
+    margin-bottom: 0px;
+}
+
+/* estilos */
+.div-paddings-0px{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.color-azul{
+	color: #0076a6;
+}
+
+.color-naranja{
+	color: #e87d09;
+}
+
+.color-verde{
+	color: #02897b;
+}
+
+.color-morado{
+	color: #752995;
+}
+
+.font20px{
+	font-size: 20px;
+}
+
+.font30px{
+	font-size: 30px;
+}
+
+.font50px{
+	font-size: 50px;
+}
+
+.margin-bottom0px{	
+    margin-bottom: 0px;
+}
+
+.box-shadow{
+	box-shadow: 1px 2px 7px 0px #00000042;
+}
+
+.hr-verde{
+    margin-bottom: 0px; 
+    border: 0;
+    border-top: 1px solid #02897b;
+}
+
+.btn-azul {
+    color: #fff;
+    background-color: #008cb9;
+    border-color: #1d81a0;
+    font-size: 17px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+}
+
+.btn-azul:hover {
+    color: #fff;
+    background-color: #1d81a0;
+    border-color: #13637b;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+}
+a{
+	color: #014c74;
+	font-family: 'Oswald', sans-serif;
+}
+
+.border-right{
+	background-image: linear-gradient(#0076a600, #014c74, #0076a600), linear-gradient(#0076a600, #014c74, #0076a600);
+    background-size: 2px 100%;
+    background-position: 0 0,100% 0;
+    background-repeat: no-repeat;
+}
+
+.border {
+    background-image: linear-gradient(#0076a6, #014c74, #0076a6);
+    background-size: 2px 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.box1{
+	background-color: #0076a6;
+    border-radius: 0px 45px 45px 0px;
+    padding-top: 14px;
+    padding-bottom: 1px;
+    padding-left: 35px;
+    color: white;
+    font-size: 25px;
+    font-family: 'oswald';
+    font-weight: 400;
+    box-shadow: 1px 2px 11px 0px #00000042;
+}
+
+.box2{
+	margin-top: 27px;
+    padding-left: 7%;
+    padding-right: 7%;
+    margin-bottom: 10px;
+}
+
+.box3{
+    background-color: #e87d09;
+    border-radius: 0px 45px 45px 0px;
+    padding-top: 14px;
+    padding-bottom: 1px;
+    padding-left: 35px;
+    color: white;
+    font-size: 25px;
+    font-family: 'oswald';
+    font-weight: 400;
+    box-shadow: 1px 2px 11px 0px #00000042;
+    width: 70%;
+}
+
+.box4{
+    background-color: #02897b;
+    border-radius: 0px 45px 45px 0px;
+    padding-top: 14px;
+    padding-bottom: 1px;
+    padding-left: 35px;
+    color: white;
+    font-size: 25px;
+    font-family: 'oswald';
+    font-weight: 400;
+    box-shadow: 1px 2px 11px 0px #00000042;
+    width: 70%;
+}
+
+.box5{
+    background-color: #752995;
+    border-radius: 0px 45px 45px 0px;
+    padding-top: 14px;
+    padding-bottom: 1px;
+    padding-left: 35px;
+    color: white;
+    font-size: 25px;
+    font-family: 'oswald';
+    font-weight: 400;
+    box-shadow: 1px 2px 11px 0px #00000042;
+    width: 70%;
+}
+
+.font-reconocimiento{
+	color: #752995;
+	font-family: 'oswald';
+}
+
+.font-oswald-25px{
+	font-size: 25px;
+    font-family: 'oswald'
+}
+
+.font-oswald-40px{
+    font-size: 40px;
+    font-family: 'oswald'
+}
+
+/* header */
+
+.fondo4{
+	background-color: #004c74;
+    color: white;
+    text-align: center;
+    font-family: 'oswald';
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+.div-header{
+	padding-top: 33px;
+    padding-bottom: 27px;
+    margin-left: 35px;
+    margin-right: 25px;
+}
+
+.nav-azul{
+	background-color: #0076a6;
+    border: 0px solid transparent;
+    border-radius: 0px;
+}
+
+.a-nav{
+	font-size: 20px;
+	font-family: 'Oswald', sans-serif;
+	color: #fff;
+}
+
+.nav > li > .a-nav:hover, .nav > li > .a-nav:focus {
+    text-decoration: none;
+    background-color: #c2d1d8;
+}
+
+.a-nav:hover, .a-nav:focus {
+	text-decoration: none;
+    background-color: #c2d1d8;
+    color: #014c74;
+}
+
+
+ /* carousel */
+.div-carousel{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.div-carousel-caption{
+	background-color: #f0f0f0cc;
+	color: black;
+	position: absolute;
+	text-align: left;
+	left: 0%;
+	padding-left: 11%;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+	right: 37%;
+	bottom: 12%;
+}
+
+.div-carousel-caption-title{
+ 	color: #014c74;
+}
+
+.div-carousel-control{
+	color: #01547b;
+}
+
+.carousel-indicators .active {
+	width: 15px;
+	height: 15px;
+    margin: 0;
+    background-color: #006590;
+    border: 1px solid #006590;
+}
+.carousel-indicators li {
+	width: 14px;
+	height: 14px;
+    background-color: #000 \9;
+    background-color: #fff;
+    border: 1px solid #fff;
+}
+
+/* secciones */
+
+.noticias-box{
+	padding: 0px;
+    margin-top: 33px;
+}
+
+.eventos-box{
+	padding-top: 20px;
+    background: #e6e6e6;
+    padding-bottom: 30px;
+    overflow: auto;
+    height: 500px;
+}
+
+.eventos2-box{
+	padding-top: 20px;
+    background: #ebeff2;
+    padding-bottom: 30px;
+    overflow: auto;
+    height: 500px;
+}
+
+.div-paddings-box{
+	padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+}
+
+.eventos-dias-box{
+	background-color: #e87d09;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    font-family: 'oswald';
+    box-shadow: 1px 2px 11px 0px #00000042;
+}
+
+.actividades-face-box {
+    background-color: #3f69b5;
+    border-radius: 17px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 1px 2px 11px 0px #00000042;
+}
+
+.actividades-youtube-box {
+    background-color: #e24026;
+    border-radius: 17px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 1px 2px 11px 0px #00000042;
+}
+
+
+.actividades-twitter-box {
+    background-color: #31acf5;
+    border-radius: 17px;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 1px 2px 11px 0px #00000042;
+}
+
+.footer-box{
+	padding: 20px;
+    color: #fff;
+}
+
+.footer-social-back{
+	background-color: white;
+    color: #095a91;
+    padding: 7px 5px 5px 5px;
+    font-size: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 100%;
+    width: 45px;
+    height: 45px;
+}
+
+/* calendario */
+
+#calendario {
+    font-size:12px;
+}
+
+#calendario caption {
+
+    padding: 20px 15px;
+    background-color: #ffa727;
+    color: #fff;
+    font-weight: bold;
+    font-size: medium;
+    /*height: 100%;*/
+
+}
+
+#calendario caption div:nth-child(1) {
+
+}
+
+#calendario caption div:nth-child(2) {
+    font-size: 50px;
+    font-weight: lighter;
+    font-family: 'oswald';
+    text-align: center;
+    border-right: 2px solid #e77e09;
+}
+
+#calendario caption div:nth-child(1) a {
+    cursor:pointer;
+    color: #fff;
+    font-size: 30px;
+    font-weight: lighter;
+    font-family: 'oswald';
+}
+
+#calendario th {
+    color:#fff;
+    width: 4%;
+    border: 0px;
+}
+
+#calendario th p{
+    background-color: #78909c;
+    padding: 7px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+#calendario td {
+    text-align: center;
+        padding: 15px 10px 15px 10px;
+    color: #76919c;
+    font-weight: bold;
+    font-size: 14px;
+    border: 0px;
+    width: 4%;
+}
+
+#calendario .hoy {
+
+    background-color: #78909c;
+    color: #f7f7f7;
+
+}
+
+#calendario .mes{
+    font-size: 23px;
+    font-family: 'oswald';
+    font-weight: lighter;
+    color: #e77e09;
+}
+
+#calendario .anio{
+    font-size: 27px;
+    font-family: 'oswald';
+    font-weight: bold;
+    color: #e77e09;
+}
+
+#calendario .fondo-calendar{
+    background-image: url(img/fondo-calendario.png);
+    background-size: 100%;
+}
+
+
+
+

@@ -34,7 +34,16 @@ function membership_menu(){
         'administrar_membresias',
         'membership_admin_page'
     );
-    
+
+    add_submenu_page(
+        'administrar_usuarios',
+        'Administrar Documentos',
+        'Administrar Documentos',
+        'manage_options',
+        'administrar_documentos',
+        'document_admin_page'
+    );
+ 
     add_submenu_page(
         'administrar_usuarios',
         'Agregar Nueva Membresía',
@@ -64,15 +73,23 @@ function membership_menu(){
 }
 
 function users_admin_page(){
-    printf( get_view('wp-users-admin.php') );
+    //printf( get_view('wp-users-admin.php') );
+    include_once( dirname( __FILE__ ) . '/views/wp-users-admin.php' );
 }
 
 function membership_admin_page(){
-    printf( get_view('wp-memberships-admin.php' ) );
+    //printf( get_view('wp-memberships-admin.php' ) );
+    include_once( dirname( __FILE__ ) . '/views/wp-memberships-admin.php' );
+}
+
+function document_admin_page(){
+    //printf( get_view('wp-documents-admin.php' ) );
+    include_once( dirname( __FILE__ ) . '/views/wp-documents-admin.php' );
 }
 
 function membership_create_page(){
-    printf( get_view('wp-membership-create.php') );
+    // printf( get_view('wp-membership-create.php') );
+    include_once( dirname( __FILE__ ) . '/views/wp-membership-create.php' );
 }
 
 function document_create_page(){
