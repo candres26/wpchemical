@@ -3,7 +3,6 @@
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Opciones</th>
@@ -24,7 +23,6 @@
                     foreach( $documents as $document ){
                         ?>
                         <tr>
-                            <td><?php echo ( $document->id ); ?></td>
                             <td><?php echo ( $document->name ); ?></td>
                             <td><?php echo ( $document->description ); ?></td>
                             <td><a href="#">Editar</a>&nbsp;&nbsp;<a href="#">Eliminar</a></td>

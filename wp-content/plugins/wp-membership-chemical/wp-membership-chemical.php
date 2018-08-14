@@ -78,17 +78,14 @@ function users_admin_page(){
 }
 
 function membership_admin_page(){
-    //printf( get_view('wp-memberships-admin.php' ) );
     include_once( dirname( __FILE__ ) . '/views/wp-memberships-admin.php' );
 }
 
 function document_admin_page(){
-    //printf( get_view('wp-documents-admin.php' ) );
     include_once( dirname( __FILE__ ) . '/views/wp-documents-admin.php' );
 }
 
 function membership_create_page(){
-    // printf( get_view('wp-membership-create.php') );
     include_once( dirname( __FILE__ ) . '/views/wp-membership-create.php' );
 }
 
@@ -110,6 +107,7 @@ add_action( 'init', 'create_tag_own' );
 
 add_action( 'init', 'create_document_own' );
 
+add_action( 'init', 'create_membership_own' );
 
 function register_styles(){
 	wp_register_style('wpchemicalstyle', plugins_url( '/css/wp_chem_styles.css', __FILE__ ) );
@@ -153,5 +151,65 @@ function create_document_own(){
             )
         );
         wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nuevo_documento&status=0' );
+    }
+}
+
+    
+function create_membership_own(){
+    global $wpdb;
+    if( isset( $_REQUEST[ "action" ] ) && $_REQUEST[ "action" ] == "create_membership_own"){
+        $wpdb->insert(
+            'qm_membership',
+            array(
+                'name'=> $_POST['name'],
+                'description'=> $_POST['description'],
+                'price'=> $_POST['price'],
+                'term'=> $_POST['term'],
+                'state'=> $_POST['state']
+            ),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            )
+        );
+
+        $membership_id = $wpdb->insert_id;
+
+        $documentos = explode( ";", $_POST["documentos-id"] );
+
+        foreach( $documentos as $documento ){
+            $wpdb->insert(
+                'qm_membership_document',
+                array(
+                    'membership_id'=> $membership_id,
+                    'document_id'=> $documento
+                ),
+                array(
+                    '%d',
+                    '%d',
+                )
+            );
+        }
+
+        $tags = explode( ";", $_POST["tags-id"] );
+
+        foreach( $tags as $tag ){
+            $wpdb->insert(
+                'qm_membership_tag',
+                array(
+                    'membership_id'=> $membership_id,
+                    'tag_id'=> $tag
+                ),
+                array(
+                    '%d',
+                    '%d',
+                )
+            );
+        }
+
+        wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
     }
 }
