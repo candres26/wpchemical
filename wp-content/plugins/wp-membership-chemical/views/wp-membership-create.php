@@ -4,7 +4,8 @@
             echo '<div class="notice notice-success is-dismissible"><p>Membresía guardada correctamente</p></div>';
         }
     ?>
-    <h2>Agregar Nueva Membresía</h2>
+    <h1 class="wp-heading-inline">Agregar Nueva Membresía</h1>
+    <hr class="wp-header-end"/>
     <div id="col-container" class="wp-clearfix">
         <div id="col-left">
             <div class="col-wrap">
