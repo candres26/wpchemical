@@ -70,6 +70,15 @@ function membership_menu(){
         'crear_nueva_etiqueta',
         'tag_create_page'
     );
+
+    add_submenu_page(
+        null,
+        'Editar Membresía',
+        'Editar Membresía',
+        'manage_options',
+        'editar_membresía',
+        'membership_edit_page'
+    );
 }
 
 function users_admin_page(){
@@ -97,17 +106,31 @@ function tag_create_page(){
     include_once(dirname( __FILE__ ) . '/views/wp-tag-create.php' );
 }
 
+function membership_edit_page(){
+        include_once( dirname( __FILE__ ) . '/views/wp-membership-edit.php' );
+}
+
+
 add_action('admin_menu', 'membership_menu');
 
-add_action( 'init', 'register_styles' );
-
 add_action( 'admin_enqueue_scripts', 'enqueue_styles' );
+
+add_action( 'init', 'register_styles' );
 
 add_action( 'init', 'create_tag_own' );
 
 add_action( 'init', 'create_document_own' );
 
 add_action( 'init', 'create_membership_own' );
+
+add_action( 'admin_menu', 'membership_edit' );
+
+add_action( 'init', 'edit_membership_own' );
+
+
+function membership_edit(){
+    add_pages_page('Editar Membresía', 'Editar Membresía', 'manage_options', 'editar_membresia', 'membership_edit_page' );
+}
 
 function register_styles(){
 	wp_register_style('wpchemicalstyle', plugins_url( '/css/wp_chem_styles.css', __FILE__ ) );
@@ -212,4 +235,8 @@ function create_membership_own(){
 
         wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
     }
+}
+
+function edit_membership_own(){
+
 }

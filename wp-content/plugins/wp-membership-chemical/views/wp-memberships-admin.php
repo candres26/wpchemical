@@ -29,7 +29,7 @@
                             <td><?php echo ( $membership->price ); ?></td>
                             <td><?php echo ( $membership->term ); ?></td>
                             <td><?php $state = $membership->state == 1 ? "Activo": "Inactivo"; echo $state; ?></td>
-                            <td><a href="#">Ver</a></td>
+                            <td><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_membresia&id=<?php echo( $membership->id ); ?>">Ver</a></td>
                         </tr>
                         <?php
                     }
