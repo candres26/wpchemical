@@ -238,5 +238,60 @@ function create_membership_own(){
 }
 
 function edit_membership_own(){
+    global $wpdb;
+    if( isset( $_REQUEST[ "action" ] ) && $_REQUEST[ "action" ] == "edit_membership_own"){
+        $wpdb->update(
+            'qm_membership',
+            array(
+                'name'=> $_POST['name'],
+                'description'=> $_POST['description'],
+                'price'=> $_POST['price'],
+                'term'=> $_POST['term'],
+                'state'=> $_POST['state']
+            ),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            )
+        );
 
+        $membership_id = $wpdb->insert_id;
+
+        $documentos = explode( ";", $_POST["documentos-id"] );
+
+        foreach( $documentos as $documento ){
+            $wpdb->insert(
+                'qm_membership_document',
+                array(
+                    'membership_id'=> $membership_id,
+                    'document_id'=> $documento
+                ),
+                array(
+                    '%d',
+                    '%d',
+                )
+            );
+        }
+
+        $tags = explode( ";", $_POST["tags-id"] );
+
+        foreach( $tags as $tag ){
+            $wpdb->insert(
+                'qm_membership_tag',
+                array(
+                    'membership_id'=> $membership_id,
+                    'tag_id'=> $tag
+                ),
+                array(
+                    '%d',
+                    '%d',
+                )
+            );
+        }
+
+        wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
+    }
 }
