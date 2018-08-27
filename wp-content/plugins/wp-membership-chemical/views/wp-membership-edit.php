@@ -1,3 +1,34 @@
+<script type="text/javascript">
+
+function get_document( gdid ){
+    console.log(gdid);
+    if( jQuery( '#documentos-id' ).val() != '' ){
+        var did = jQuery( '#documentos-id' ).val().split(';');
+    }else{
+        did = [];
+    }
+
+    if( jQuery( did.indexOf( jQuery('#documentos-ref').val() ) == -1 ) ){
+        did.push( gdid );
+        jQuery( '#documentos-id' ).val(did.join(';') );
+    }
+}
+
+function get_tags( gtid){
+    console.log(gtid);
+    if( jQuery( '#tags-id' ).val() != '' ){
+        var did = jQuery( '#tags-id' ).val().split(';');
+    }else{
+        did = [];
+    }
+
+    if( jQuery( did.indexOf( jQuery('#tags-ref').val() ) == -1 ) ){
+        did.push( gtid );
+        jQuery( '#tags-id' ).val(did.join(';') );
+    }
+}
+</script>
+
 <div class="wrap">
     <?php
         if(isset($_GET['id']) && $_GET['id'] == 0 ){
@@ -110,25 +141,15 @@
                             if( $memdoc->document_id == $doc->id ) {
                                 ?>
                                 <script type="text/javascript">
-                                    function get_document(){
-                                        if( jQuery( '#documentos-id' ).val() != '' )
-                                            var did = jQuery( '#documentos-id' ).val().split(';');
-                                        else
-                                            did = [];
-
-                                        if( jQuery( did.indexOf( jQuery('#documentos-ref').val() ) == -1 ) ){
-                                            did.push( <?php echo( $doc->id ); ?> );
-                                            jQuery( '#documentos-id' ).val(did.join(';') );
-                                        }
-                                    }
-                                    get_document();
+                                    var doc_id = "<?php echo( $doc->id );  ?>";
+                                    get_document( doc_id );
                                 </script>
                                 <tr><td style="display: none;"><?php echo( $doc->id ); ?></td><td><?php echo( $doc->name ) ?></td><td onclick="rem_document( this );">X</td></tr>
                                 <?php
                             }
                         }
                     }
-                ?>
+                    ?>
                 </tbody>
             </table>
             <br/>
@@ -163,25 +184,15 @@
                             if( $memtag->tag_id == $tagmem->id ) {
                                 ?>
                                 <script type="text/javascript">
-                                    function get_tags(){
-                                        if( jQuery( '#tags-id' ).val() != '' )
-                                            var did = jQuery( '#tags-id' ).val().split(';');
-                                        else
-                                            did = [];
-
-                                        if( jQuery( did.indexOf( jQuery('#tags-ref').val() ) == -1 ) ){
-                                            did.push( <?php echo( $tagmem->id ); ?> );
-                                            jQuery( '#tags-id' ).val(did.join(';') );
-                                        }
-                                    }
-                                    get_tags();
+                                    var tag_id = "<?php echo( $tagmem->id );  ?>";
+                                    get_tags( tag_id );
                                 </script>
                                 <tr><td style="display: none"><?php echo( $tagmem->id ); ?></td><td><?php echo( $tagmem->name ) ?></td><td onclick="rem_tag( this );">X</td></tr>
                                 <?php
                             }
                         }
                     }
-                ?>
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -204,10 +215,11 @@ jQuery(document).ready(function(){
     jQuery("input[name='term']").val(term);
 
 
-    if(state == 1)
+    if(state == 1){
         jQuery("select[name='state'] option[value="+ state +"]").attr("selected", true);
-    else
+    }else{
         jQuery("select[name='state'] option[value="+ state +"]").attr("selected", true);
+    }
 
 });
 
