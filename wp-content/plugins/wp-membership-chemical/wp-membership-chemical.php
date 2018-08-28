@@ -250,6 +250,9 @@ function edit_membership_own(){
                 'state'=> $_POST['state']
             ),
             array(
+                'id'=>$_POST['id_edit_mem']
+            ),
+            array(
                 '%s',
                 '%s',
                 '%s',
@@ -258,24 +261,68 @@ function edit_membership_own(){
             )
         );
 
-        $membership_id = $wpdb->insert_id;
+        $id = $_POST['id_edit_mem'];
+
+        //$membership_id = $wpdb->insert_id;
 
         $documentos = explode( ";", $_POST["documentos-id"] );
+        
+        $membership_doc = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_document
+            WHERE membership_id=$id"
+        );
 
-        foreach( $documentos as $documento ){
-            $wpdb->insert(
-                'qm_membership_document',
-                array(
-                    'membership_id'=> $membership_id,
-                    'document_id'=> $documento
-                ),
-                array(
-                    '%d',
-                    '%d',
-                )
-            );
+        $arraydocid = [];
+
+        foreach( $membership_doc as $arrdocids ){
+            array_push( $arraydocid, $arrdocids->document_id );
+        }
+        
+        if( $membership_doc != '' ){
+            foreach( $membership_doc as $damem ){
+                if( array_search( $damem->document_id, $documentos, true ) === false ){
+                    $wpdb->delete(
+                        'qm_membership_document',
+                        array( 'id'=> $damem->id )
+                    );
+                }
+            }
+
+            foreach ($documentos as $indoc) {
+                if ( array_search( $indoc,  $arraydocid, true ) === false ) {
+                    $wpdb->insert(
+                        'qm_membership_document',
+                        array(
+                            'membership_id'=> $id,
+                            'document_id'=> $indoc
+                        ),
+                        array(
+                            '%d',
+                            '%d',
+                        )
+                    );
+                }
+            }
+        }else{
+            foreach( $documentos as $documento ){
+                $wpdb->insert(
+                    'qm_membership_document',
+                    array(
+                        'membership_id'=> $id,
+                        'document_id'=> $documento
+                    ),
+                    array(
+                        '%d',
+                        '%d',
+                    )
+                );
+            }
         }
 
+/*
+        
         $tags = explode( ";", $_POST["tags-id"] );
 
         foreach( $tags as $tag ){
@@ -291,7 +338,7 @@ function edit_membership_own(){
                 )
             );
         }
-
+*/
         wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
     }
 }

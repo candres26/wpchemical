@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 function get_document( gdid ){
-    console.log(gdid);
+    //console.log(gdid);
     if( jQuery( '#documentos-id' ).val() != '' ){
         var did = jQuery( '#documentos-id' ).val().split(';');
     }else{
@@ -15,7 +15,7 @@ function get_document( gdid ){
 }
 
 function get_tags( gtid){
-    console.log(gtid);
+    //console.log(gtid);
     if( jQuery( '#tags-id' ).val() != '' ){
         var did = jQuery( '#tags-id' ).val().split(';');
     }else{
@@ -72,6 +72,7 @@ function get_tags( gtid){
                         <input type="hidden" name="action" value="edit_membership_own">
                         <input id="documentos-id" type="text" name="documentos-id"/>
                         <input id="tags-id" type="text" name="tags-id"/>
+                        <input type="hidden" name="id_edit_mem" value="<?php echo( $id ); ?>"/>
                         <div class="form-field">
                             <label for="name">Nombre:&nbsp;</label>
                             <input id="id-field" type="text" name="name" placeholder="Nombre de la Membresía" required />
