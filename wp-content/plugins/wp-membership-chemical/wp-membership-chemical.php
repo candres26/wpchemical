@@ -127,6 +127,8 @@ add_action( 'admin_menu', 'membership_edit' );
 
 add_action( 'init', 'edit_membership_own' );
 
+add_action( 'init', 'delete_membership_own' );
+
 
 function membership_edit(){
     add_pages_page('Editar Membresía', 'Editar Membresía', 'manage_options', 'editar_membresia', 'membership_edit_page' );
@@ -376,11 +378,52 @@ function edit_membership_own(){
                 );
             }
         }
+        
+        $upval = 1;
 
-        wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
+        wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=editar_membresia&id='.$id.'&msjup='.$upval );
     }
 }
 
 function delete_membership_own(){
-    
+    global $wpdb;
+    if( isset( $_REQUEST[ "action" ] ) && $_REQUEST[ "action" ] == "delete_membership_own"){
+        $id = $_POST['id_delete_mem'];
+        
+        $membership_doc = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_document
+            WHERE membership_id=$id"
+        );
+
+        $membership_tag = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_tag
+            WHERE membership_id=$id"
+        );
+
+        foreach ($membership_doc as $memdoc) {
+            $wpdb->delete(
+                'qm_membership_document',
+                array( 'id'=> $memdoc->id )
+            );
+        }
+
+        foreach ($membership_tag as $memtag) {
+            $wpdb->delete(
+                'qm_membership_tag',
+                array( 'id'=> $memtag->id )
+            );
+        }
+
+        $wpdb->delete(
+            'qm_membership',
+            array( 'id'=> $id )
+        );
+
+        wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=administrar_membresias&status=0' );
+    }
+
 }

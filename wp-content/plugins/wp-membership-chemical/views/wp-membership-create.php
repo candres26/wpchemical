@@ -12,8 +12,8 @@
                 <div class="form-wrap">
                     <form action="<?php esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
                         <input type="hidden" name="action" value="create_membership_own">
-                        <input id="documentos-id" type="text" name="documentos-id"/>
-                        <input id="tags-id" type="text" name="tags-id"/>
+                        <input id="documentos-id" type="hidden" name="documentos-id"/>
+                        <input id="tags-id" type="hidden" name="tags-id"/>
                         <div class="form-field">
                             <label for="name">Nombre:&nbsp;</label>
                             <input type="text" name="name" placeholder="Nombre de la Membresía" required>

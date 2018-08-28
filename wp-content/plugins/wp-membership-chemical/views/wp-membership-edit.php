@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 function get_document( gdid ){
-    console.log(gdid);
+    //console.log(gdid);
     if( jQuery( '#documentos-id' ).val() != '' ){
         var did = jQuery( '#documentos-id' ).val().split(';');
     }else{
@@ -15,7 +15,7 @@ function get_document( gdid ){
 }
 
 function get_tags( gtid){
-    console.log(gtid);
+    //console.log(gtid);
     if( jQuery( '#tags-id' ).val() != '' ){
         var did = jQuery( '#tags-id' ).val().split(';');
     }else{
@@ -31,9 +31,10 @@ function get_tags( gtid){
 
 <div class="wrap">
     <?php
-        if(isset($_GET['id']) && $_GET['id'] == 0 ){
-            echo '<div class="notice notice-success is-dismissible"><p>Membresía actualizada correctamente</p></div>';
-        }else{
+        if( isset($_GET['id']) && isset( $_GET['msjup'] ) && $_GET['msjup'] == 1 ){
+            echo('<div class="notice notice-success is-dismissible"><p>Membresía actualizada correctamente</p></div>');
+            $id = ( $_GET['id'] );
+        }elseif( isset($_GET['id']) ){
             $id = ( $_GET['id'] );
         }
 
@@ -70,8 +71,8 @@ function get_tags( gtid){
                 <div class="form-wrap">
                     <form action="<?php esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
                         <input type="hidden" name="action" value="edit_membership_own">
-                        <input id="documentos-id" type="text" name="documentos-id"/>
-                        <input id="tags-id" type="text" name="tags-id"/>
+                        <input id="documentos-id" type="hidden" name="documentos-id"/>
+                        <input id="tags-id" type="hidden" name="tags-id"/>
                         <input type="hidden" name="id_edit_mem" value="<?php echo( $id ); ?>"/>
                         <div class="form-field">
                             <label for="name">Nombre:&nbsp;</label>
@@ -101,6 +102,10 @@ function get_tags( gtid){
                                 <input class="button button-primary" type="submit" value="Guardar Cambios">
                             </p>
                         </div>
+                    </form>
+                    <form id="form-delete" action="<?php esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+                        <input type="hidden" name="action" value="delete_membership_own"/>
+                        <input type="hidden" name="id_delete_mem" value="<?php echo( $id ); ?>"/>
                         <div>
                             <p class="submit">
                                 <input class="button button-secondary" type="button" value="Eliminar Membresía" onclick="delete_reg(<?php echo( $_GET['id'] ) ?>)">
@@ -271,8 +276,10 @@ function rem_tag( cell ){
     parent.remove();
 }
 
-function delete_reg( reg ){
-    alert( reg );
+function delete_reg(){
+    if( confirm('¿Está seguro de eliminar este registro?') ){
+        jQuery('#form-delete').submit()
+    }
 }
 
 </script>
