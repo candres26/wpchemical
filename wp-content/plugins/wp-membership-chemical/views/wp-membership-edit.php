@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 function get_document( gdid ){
-    //console.log(gdid);
+    console.log(gdid);
     if( jQuery( '#documentos-id' ).val() != '' ){
         var did = jQuery( '#documentos-id' ).val().split(';');
     }else{
@@ -15,7 +15,7 @@ function get_document( gdid ){
 }
 
 function get_tags( gtid){
-    //console.log(gtid);
+    console.log(gtid);
     if( jQuery( '#tags-id' ).val() != '' ){
         var did = jQuery( '#tags-id' ).val().split(';');
     }else{
@@ -103,7 +103,7 @@ function get_tags( gtid){
                         </div>
                         <div>
                             <p class="submit">
-                                <input class="button button-secondary" type="submit" value="Eliminar Membresía">
+                                <input class="button button-secondary" type="button" value="Eliminar Membresía" onclick="delete_reg(<?php echo( $_GET['id'] ) ?>)">
                             </p>
                         </div>
                     </form>
@@ -269,6 +269,10 @@ function rem_tag( cell ){
     tid.splice( ind, 1 );
     jQuery( '#tags-id' ).val(tid.join(';') );
     parent.remove();
+}
+
+function delete_reg( reg ){
+    alert( reg );
 }
 
 </script>

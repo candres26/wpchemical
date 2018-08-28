@@ -320,25 +320,67 @@ function edit_membership_own(){
                 );
             }
         }
-
-/*
         
         $tags = explode( ";", $_POST["tags-id"] );
 
-        foreach( $tags as $tag ){
-            $wpdb->insert(
-                'qm_membership_tag',
-                array(
-                    'membership_id'=> $membership_id,
-                    'tag_id'=> $tag
-                ),
-                array(
-                    '%d',
-                    '%d',
-                )
-            );
+        $membership_tag = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_tag
+            WHERE membership_id=$id"
+        );
+
+        $arraytagid = [];
+
+        foreach( $membership_tag as $arrtagids ){
+            array_push( $arraytagid, $arrtagids->tag_id );
         }
-*/
+        
+        if( $membership_tag != '' ){
+            foreach( $membership_tag as $tamem ){
+                if( array_search( $tamem->tag_id, $tags, true ) === false ){
+                    $wpdb->delete(
+                        'qm_membership_tag',
+                        array( 'id'=> $tamem->id )
+                    );
+                }
+            }
+
+            foreach ($tags as $intag) {
+                if ( array_search( $intag,  $arraytagid, true ) === false ) {
+                    $wpdb->insert(
+                        'qm_membership_tag',
+                        array(
+                            'membership_id'=> $id,
+                            'tag_id'=> $intag
+                        ),
+                        array(
+                            '%d',
+                            '%d',
+                        )
+                    );
+                }
+            }
+        }else{
+            foreach( $tags as $tag ){
+                $wpdb->insert(
+                    'qm_membership_tag',
+                    array(
+                        'membership_id'=> $id,
+                        'tag_id'=> $tag
+                    ),
+                    array(
+                        '%d',
+                        '%d',
+                    )
+                );
+            }
+        }
+
         wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
     }
+}
+
+function delete_membership_own(){
+    
 }
