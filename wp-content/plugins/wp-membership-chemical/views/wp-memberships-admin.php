@@ -20,19 +20,24 @@
                     FROM qm_membership
                     "
                 );
-
-                if( $memberships ){
-                    foreach( $memberships as $membership ){
-                        ?>
-                        <tr>
-                            <td><?php echo ( $membership->name ); ?></td>
-                            <td><?php echo ( $membership->price ); ?></td>
-                            <td><?php echo ( $membership->term ); ?></td>
-                            <td><?php $state = $membership->state == 1 ? "Activo": "Inactivo"; echo $state; ?></td>
-                            <td><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_membresia&id=<?php echo( $membership->id ); ?>">Ver</a></td>
-                        </tr>
-                        <?php
+                if( count( $memberships ) > 0 ){
+                    if( $memberships ){
+                        foreach( $memberships as $membership ){
+                            ?>
+                            <tr>
+                                <td><?php echo ( $membership->name ); ?></td>
+                                <td><?php echo ( $membership->price ); ?></td>
+                                <td><?php echo ( $membership->term ); ?></td>
+                                <td><?php $state = $membership->state == 1 ? "Activo": "Inactivo"; echo $state; ?></td>
+                                <td><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_membresia&id=<?php echo( $membership->id ); ?>">Ver</a></td>
+                            </tr>
+                            <?php
+                        }
                     }
+                }else{
+                    ?>
+                    <tr><td colspan="5" style="text-align: center; font-size: 1.2em; font-weight: bold;">No hay registros para mostrar</td></tr>
+                    <?php
                 }
             ?>
         </tbody>   
