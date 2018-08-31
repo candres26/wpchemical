@@ -110,8 +110,8 @@ function getFacebookId($pageID) // This function return facebook page details by
 }
 
 // Hooks admin-post
-add_action( 'admin_post_nopriv_process_form', 'send_request' );
-add_action( 'admin_post_process_form', 'send_request' );
+do_action( 'admin_post_nopriv_process_form', 'send_request' );
+do_action( 'admin_post_process_form', 'send_request' );
 
 // Funcion callback
 function send_request() {
@@ -119,20 +119,20 @@ function send_request() {
     $name = sanitize_text_field($_POST['name']);
     $lastname = sanitize_text_field($_POST['last-name']);
 	$email = sanitize_email($_POST['email']);
-	$message = sanitize_text_field($_POST['type-membership']);
+	$typemembership = sanitize_text_field($_POST['type-membership']);
 
-	$adminmail = "destino@dominio.com"; //email destino
+	$adminmail = "karlosareyes@gmail.com"; //email destino
 	$subject = 'Formulario de contacto'; //asunto
 	$headers = "Reply-to: " . $name . " <" . $email . ">";
 
 	//Cuerpo del mensaje
 	$msg = "Nombre: " . $name . "\n";
 	$msg .= "E-mail: " . $email . "\n\n";
-	$msg .= "Mensaje: \n\n" . $message . "\n";
+	$msg .= "Mensaje: \n\n" . $typemembership . "\n";
 
 	$sendmail = wp_mail( $adminmail, $subject, $msg, $headers);
 
-	wp_redirect( home_url("/registro/")."?sent=".$sendmail ); //asumiendo que existe esta url
+	wp_redirect( esc_url( home_url("/registro/")."?sent=".$sendmail ) ); //asumiendo que existe esta url
 }
 
 

@@ -28,6 +28,15 @@ function membership_menu(){
         
     add_submenu_page(
         'administrar_usuarios',
+        'Administrar Solicitudes',
+        'Administrar Solicitudes',
+        'manage_options',
+        'administrar_solicitudes',
+        'request_admin_page'
+    );
+
+    add_submenu_page(
+        'administrar_usuarios',
         'Administrar Membresías',
         'Administrar Membresías',
         'manage_options',
@@ -84,6 +93,10 @@ function membership_menu(){
 function users_admin_page(){
     //printf( get_view('wp-users-admin.php') );
     include_once( dirname( __FILE__ ) . '/views/wp-users-admin.php' );
+}
+
+function request_admin_page(){
+    include_once( dirname( __FILE__ ) . '/views/wp-requests-admin.php' );
 }
 
 function membership_admin_page(){

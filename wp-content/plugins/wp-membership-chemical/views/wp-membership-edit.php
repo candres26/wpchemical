@@ -76,7 +76,7 @@ function get_tags( gtid){
                         <input type="hidden" name="id_edit_mem" value="<?php echo( $id ); ?>"/>
                         <div class="form-field">
                             <label for="name">Nombre:&nbsp;</label>
-                            <input id="id-field" type="text" name="name" placeholder="Nombre de la Membresía" required />
+                            <input id="id-field" type="text" name="name" placeholder="Nombre de la Membresía" required readonly/>
                         </div>
                         <div class="form-field">
                             <label for="description">Descripción:&nbsp;</label>
