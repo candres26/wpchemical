@@ -8,7 +8,7 @@
                 <th>Tipo de Pago</th>
                 <th>Fecha de Expiración</th>
                 <th>Estado</th>
-                <th>Opciones</th>
+                <th style="text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -72,7 +72,7 @@
                                 </td>
                                 <td><?php echo( $request->expiration_date ); ?></td>
                                 <td><?php $state = $request->state == 1 ? "Activo": "Inactivo"; echo $state; ?></td>
-                                <td><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_solicitud&id=<?php echo( $request->id ); ?>">Ver</a></td>
+                                <td style="text-align: center;"><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_solicitud&id=<?php echo( $request->id ); ?>">Ver</a></td>
                             </tr>
                             <?php
                         }

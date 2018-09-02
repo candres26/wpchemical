@@ -1,5 +1,10 @@
 <div class="wrap">
-    <h2>Administrar Membresías</h2>
+    <h1 class="wp-heading-inline">Administrar Membresías</h1>
+    <hr class="wp-header-end"/>
+    <p class="search-box">
+        <a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=crear_nueva_membresia" class="page-title-action" > Añadir Nuevo</a>
+    </p>
+    <div style="margin-bottom: 1em;">&nbsp;</div>
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
@@ -7,7 +12,7 @@
                 <th>Valor</th>
                 <th>Duración (días)</th>
                 <th>Estado</th>
-                <th>Opciones</th>
+                <th style="text-align: center;">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +34,7 @@
                                 <td><?php echo ( $membership->price ); ?></td>
                                 <td><?php echo ( $membership->term ); ?></td>
                                 <td><?php $state = $membership->state == 1 ? "Activo": "Inactivo"; echo $state; ?></td>
-                                <td><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_membresia&id=<?php echo( $membership->id ); ?>">Ver</a></td>
+                                <td style="text-align: center;"><a href="<?php echo ( esc_url( admin_url( 'admin.php' ) ) ); ?>?page=editar_membresia&id=<?php echo( $membership->id ); ?>">Ver</a></td>
                             </tr>
                             <?php
                         }
