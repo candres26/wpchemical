@@ -168,15 +168,15 @@ add_action( 'init', 'edit_tag_own' );
 
 
 function tag_edit(){
-    add_pages_page('Editar Etiqueta', 'Editar Etiqueta', 'manage_options', 'editar_etiqueta', 'tag_edit_page' );
+    add_dashboard_page('Editar Etiqueta', 'Editar Etiqueta', 'manage_options', 'editar_etiqueta', 'tag_edit_page' );
 }
 
 function document_edit(){
-    add_pages_page('Editar Documento', 'Editar Documento', 'manage_options', 'editar_documento', 'document_edit_page' );
+    add_dashboard_page('Editar Documento', 'Editar Documento', 'manage_options', 'editar_documento', 'document_edit_page' );
 }
 
 function membership_edit(){
-    add_pages_page('Editar Membresía', 'Editar Membresía', 'manage_options', 'editar_membresia', 'membership_edit_page' );
+    add_dashboard_page('Editar Membresía', 'Editar Membresía', 'manage_options', 'editar_membresia', 'membership_edit_page' );
 }
 
 function register_styles(){
