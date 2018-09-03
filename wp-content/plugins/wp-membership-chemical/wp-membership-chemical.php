@@ -3,7 +3,7 @@
 Plugin Name: WP Membership Chemical
 Description: This plugin it allows administration of contents for members registered.
 Version: 1.0.0
-Author: ICE and Andres Reyes
+Author: ICE
 License: GPLv2
 */
 
@@ -166,6 +166,24 @@ add_action( 'init', 'delete_tag_own' );
 
 add_action( 'init', 'edit_tag_own' );
 
+add_action( 'admin_head', 'remove_tagmenu_edit');
+
+add_action( 'admin_head', 'remove_documentmenu_edit');
+
+add_action( 'admin_head', 'remove_membershipmenu_edit');
+
+
+function remove_tagmenu_edit() {
+    remove_submenu_page( 'index.php', 'editar_etiqueta' );
+}
+
+function remove_documentmenu_edit() {
+    remove_submenu_page( 'index.php', 'editar_documento' );
+}
+
+function remove_membershipmenu_edit() {
+    remove_submenu_page( 'index.php', 'editar_membresia' );
+}
 
 function tag_edit(){
     add_dashboard_page('Editar Etiqueta', 'Editar Etiqueta', 'manage_options', 'editar_etiqueta', 'tag_edit_page' );
@@ -552,6 +570,192 @@ function delete_tag_own(){
         
         wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=administrar_etiquetas&status=0' );
     }
+}
+
+function registration_form( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio ) {
+    echo '
+    <style>
+    div {
+      margin-bottom:2px;
+    }
+     
+    input{
+        margin-bottom:4px;
+    }
+    </style>
+    ';
+ 
+    echo '
+    <div class="container">
+        <div class="col-md-8 col-lg-8 col-sm-12" style="margin-top: 4em; margin-bottom: 4em;">
+            <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
+                <div class="form-group">
+                    <label for="username" class="control-label font20px color-azul">Username <strong>*</strong></label>
+                    <input type="text" class="form-control" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label font20px color-azul">Password <strong>*</strong></label>
+                    <input type="password" class="form-control" name="password" value="' . ( isset( $_POST['password'] ) ? $password : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label font20px color-azul">Email <strong>*</strong></label>
+                    <input type="text" class="form-control" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="website" class="control-label font20px color-azul">Website</label>
+                    <input type="text" class="form-control" name="website" value="' . ( isset( $_POST['website']) ? $website : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="firstname" class="control-label font20px color-azul">First Name</label>
+                    <input type="text" class="form-control" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="website" class="control-label font20px color-azul">Last Name</label>
+                    <input type="text" class="form-control" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="nickname" class="control-label font20px color-azul">Nickname</label>
+                    <input type="text" class="form-control" name="nickname" value="' . ( isset( $_POST['nickname']) ? $nickname : null ) . '">
+                </div>
+                <div class="form-group">
+                    <label for="bio" class="control-label font20px color-azul">About / Bio</label>
+                    <textarea class="form-control" name="bio">' . ( isset( $_POST['bio']) ? $bio : null ) . '</textarea>
+                </div>
+                <input type="submit" name="submit" value="Register"/> 
+            </form>
+        </div>
+    </div>
+    ';
+}
+
+function registration_validation( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio )  {
+    global $reg_errors;
+    $reg_errors = new WP_Error;
+
+    if ( empty( $username ) || empty( $password ) || empty( $email ) ) {
+        $reg_errors->add('field', 'Required form field is missing');
+    }
+
+    if ( 4 > strlen( $username ) ) {
+        $reg_errors->add( 'username_length', 'Username too short. At least 4 characters is required' );
+    }
+
+    if ( username_exists( $username ) )
+        $reg_errors->add('user_name', 'Sorry, that username already exists!');
+
+    if ( ! validate_username( $username ) ) {
+        $reg_errors->add( 'username_invalid', 'Sorry, the username you entered is not valid' );
+    }
+
+    if ( 5 > strlen( $password ) ) {
+        $reg_errors->add( 'password', 'Password length must be greater than 5' );
+    }
+
+    if ( !is_email( $email ) ) {
+        $reg_errors->add( 'email_invalid', 'Email is not valid' );
+    }
+
+    if ( email_exists( $email ) ) {
+        $reg_errors->add( 'email', 'Email Already in use' );
+    }
+
+    if ( ! empty( $website ) ) {
+        if ( ! filter_var( $website, FILTER_VALIDATE_URL ) ) {
+            $reg_errors->add( 'website', 'Website is not a valid URL' );
+        }
+    }
+
+    if ( is_wp_error( $reg_errors ) ) {
+ 
+        foreach ( $reg_errors->get_error_messages() as $error ) {
+         
+            echo '<div>';
+            echo '<strong>ERROR</strong>:';
+            echo $error . '<br/>';
+            echo '</div>';
+             
+        }
+     
+    }
+}
+
+function complete_registration() {
+    global $reg_errors, $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
+    if ( 1 > count( $reg_errors->get_error_messages() ) ) {
+        $userdata = array(
+        'user_login'    =>   $username,
+        'user_email'    =>   $email,
+        'user_pass'     =>   $password,
+        'user_url'      =>   $website,
+        'first_name'    =>   $first_name,
+        'last_name'     =>   $last_name,
+        'nickname'      =>   $nickname,
+        'description'   =>   $bio,
+        );
+        $user = wp_insert_user( $userdata );
+        echo 'Registration complete. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';   
+    }
+}
+
+function custom_registration() {
+    if ( isset($_POST['submit'] ) ) {
+        registration_validation(
+        $_POST['username'],
+        $_POST['password'],
+        $_POST['email'],
+        $_POST['website'],
+        $_POST['fname'],
+        $_POST['lname'],
+        $_POST['nickname'],
+        $_POST['bio']
+        );
+         
+        // sanitize user form input
+        global $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
+        
+        $username   =   sanitize_user( $_POST['username'] );
+        $password   =   esc_attr( $_POST['password'] );
+        $email      =   sanitize_email( $_POST['email'] );
+        $website    =   esc_url( $_POST['website'] );
+        $first_name =   sanitize_text_field( $_POST['fname'] );
+        $last_name  =   sanitize_text_field( $_POST['lname'] );
+        $nickname   =   sanitize_text_field( $_POST['nickname'] );
+        $bio        =   esc_textarea( $_POST['bio'] );
+ 
+        // call @function complete_registration to create the user
+        // only when no WP_error is found
+        complete_registration(
+        $username,
+        $password,
+        $email,
+        $website,
+        $first_name,
+        $last_name,
+        $nickname,
+        $bio
+        );
+    }
+ 
+    registration_form(
+        $username,
+        $password,
+        $email,
+        $website,
+        $first_name,
+        $last_name,
+        $nickname,
+        $bio
+        );
+}
+
+// Register a new shortcode: [cr_custom_registration]
+add_shortcode( 'cr_custom_registration', 'custom_registration_shortcode' );
+ 
+// The callback function that will replace [book]
+function custom_registration_shortcode() {
+    ob_start();
+    custom_registration();
+    return ob_get_clean();
 }
 
     
