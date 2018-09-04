@@ -573,58 +573,66 @@ function delete_tag_own(){
 }
 
 function registration_form( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio ) {
+    global $wpdb;
+    
     echo '
-    <style>
-    div {
-      margin-bottom:2px;
-    }
-     
-    input{
-        margin-bottom:4px;
-    }
-    </style>
-    ';
- 
-    echo '
-    <div class="container">
-        <div class="col-md-8 col-lg-8 col-sm-12" style="margin-top: 4em; margin-bottom: 4em;">
+        <div class="col-md-12 col-lg-12 col-sm-12" style="margin-top: 4em; margin-bottom: 4em;">
             <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
                 <div class="form-group">
-                    <label for="username" class="control-label font20px color-azul">Username <strong>*</strong></label>
-                    <input type="text" class="form-control" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '">
+                    <label for="username" class="control-label font20px color-azul">Usuario</label>
+                    <input type="text" class="form-control" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '" placeholder="Escriba sus nombres">
                 </div>
                 <div class="form-group">
-                    <label for="password" class="control-label font20px color-azul">Password <strong>*</strong></label>
+                    <label for="password" class="control-label font20px color-azul">Contraseña</label>
                     <input type="password" class="form-control" name="password" value="' . ( isset( $_POST['password'] ) ? $password : null ) . '">
                 </div>
                 <div class="form-group">
-                    <label for="email" class="control-label font20px color-azul">Email <strong>*</strong></label>
-                    <input type="text" class="form-control" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="website" class="control-label font20px color-azul">Website</label>
-                    <input type="text" class="form-control" name="website" value="' . ( isset( $_POST['website']) ? $website : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="firstname" class="control-label font20px color-azul">First Name</label>
+                    <label for="fname" class="control-label font20px color-azul">Nombres</label>
                     <input type="text" class="form-control" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '">
                 </div>
                 <div class="form-group">
-                    <label for="website" class="control-label font20px color-azul">Last Name</label>
+                    <label for="lname" class="control-label font20px color-azul">Apellidos</label>
                     <input type="text" class="form-control" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '">
                 </div>
                 <div class="form-group">
-                    <label for="nickname" class="control-label font20px color-azul">Nickname</label>
-                    <input type="text" class="form-control" name="nickname" value="' . ( isset( $_POST['nickname']) ? $nickname : null ) . '">
+                    <label for="email" class="control-label font20px color-azul">Email</label>
+                    <input type="text" class="form-control" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
                 </div>
                 <div class="form-group">
-                    <label for="bio" class="control-label font20px color-azul">About / Bio</label>
-                    <textarea class="form-control" name="bio">' . ( isset( $_POST['bio']) ? $bio : null ) . '</textarea>
+                    <label for="type-membership" class="control-label font20px color-azul">Tipo de Pago</label>
+                    <select class="form-control" id="type-membership" name="type-membership">
+                        <option value="#">Seleccione...</option>
+                        <option value="1">Tarjeta de Crédito</option>
+                        <option value="2">Pago en Oficina</option>
+                    </select>
                 </div>
-                <input type="submit" name="submit" value="Register"/> 
+                <div class="form-group">
+                    <label for="type-membership" class="control-label font20px color-azul">Tipo de Membresía</label>
+                    <select class="form-control" id="type-membership" name="type-membership">
+                        <option value="#">Seleccione...</option>';
+                            $memberships = $wpdb->get_results(
+                                "
+                                SELECT *
+                                FROM qm_membership
+                                "
+                            );
+                            if( $memberships ){
+                                foreach ($memberships as $membership) {
+                                    echo '<option value="';
+                                    echo( $membership->id ); 
+                                    echo '">';
+                                    echo( $membership->name );
+                                    echo'</option>';
+                                }
+                            }
+                        echo'
+                    </select>
+                </div>
+                <p>&nbsp;</p>
+                <button type="button" class="btn btn-primary" name="submit">Registrar</button>
             </form>
         </div>
-    </div>
+
     ';
 }
 
