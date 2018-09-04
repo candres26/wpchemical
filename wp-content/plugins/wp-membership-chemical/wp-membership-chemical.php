@@ -609,7 +609,7 @@ function registration_form( $username, $password, $email, $website, $first_name,
                 <div class="form-group">
                     <label for="type-membership" class="control-label font20px color-azul">Tipo de Membresía</label>
                     <select class="form-control" id="type-membership" name="type-membership">
-                        <option value="#">Seleccione...</option>';
+                        <option value="" selected="selected">Seleccione...</option>';
                             $memberships = $wpdb->get_results(
                                 "
                                 SELECT *
@@ -627,13 +627,68 @@ function registration_form( $username, $password, $email, $website, $first_name,
                             }
                         echo'
                     </select>
+                </div>';
+                echo'
+                <div id="docs-container">
                 </div>
-                <p>&nbsp;</p>
+                ';
+                echo '<p>&nbsp;</p>
                 <button type="button" class="btn btn-primary" name="submit">Registrar</button>
-            </form>
-        </div>
-
+                </form>
+                </div>
     ';
+    echo'
+        <script type="text/javascript">
+        jQuery(document).on("ready",function(){       
+            jQuery("#type-membership").on( "change",function(){
+                var url = "";
+                jQuery.ajax({                        
+                   type: "POST",                 
+                   url: url,                     
+                   data: jQuery("#type-membership option:selected").val();, 
+                   success: function(data)             
+                   {
+                        jQuery("#docs-container").html(data);               
+                   }
+               });
+            });
+        });
+        </script>
+    ';
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+        $documentsMem = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_document
+            WHERE membership_id = $idSelected
+            "
+        );
+        $documents = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_document
+            "
+        );
+    
+        foreach( $documentsMem as $docMem ){
+            foreach( $documents as $docs ){
+                if( $docMem->document_id == $docs->id ){
+                    ?>
+                    <script>
+                        jQuery( "#docs-container" ).append(
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="<?php echo( $docs->name );  ?>">
+                                <label class="custom-file-label" for="customFile">Elija un archivo</label>
+                            </div>
+                        );
+                    </script>
+                    <?php
+                }
+            }
+        }
+
+    }
+
 }
 
 function registration_validation( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio )  {
