@@ -573,122 +573,7 @@ function delete_tag_own(){
 }
 
 function registration_form( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio ) {
-    global $wpdb;
-    
-    echo '
-        <div class="col-md-12 col-lg-12 col-sm-12" style="margin-top: 4em; margin-bottom: 4em;">
-            <form action="' . $_SERVER['REQUEST_URI'] . '" method="post">
-                <div class="form-group">
-                    <label for="username" class="control-label font20px color-azul">Usuario</label>
-                    <input type="text" class="form-control" name="username" value="' . ( isset( $_POST['username'] ) ? $username : null ) . '" placeholder="Escriba sus nombres">
-                </div>
-                <div class="form-group">
-                    <label for="password" class="control-label font20px color-azul">Contraseña</label>
-                    <input type="password" class="form-control" name="password" value="' . ( isset( $_POST['password'] ) ? $password : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="fname" class="control-label font20px color-azul">Nombres</label>
-                    <input type="text" class="form-control" name="fname" value="' . ( isset( $_POST['fname']) ? $first_name : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="lname" class="control-label font20px color-azul">Apellidos</label>
-                    <input type="text" class="form-control" name="lname" value="' . ( isset( $_POST['lname']) ? $last_name : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="email" class="control-label font20px color-azul">Email</label>
-                    <input type="text" class="form-control" name="email" value="' . ( isset( $_POST['email']) ? $email : null ) . '">
-                </div>
-                <div class="form-group">
-                    <label for="type-membership" class="control-label font20px color-azul">Tipo de Pago</label>
-                    <select class="form-control" id="type-payment" name="type-membership">
-                        <option value="#">Seleccione...</option>
-                        <option value="1">Tarjeta de Crédito</option>
-                        <option value="2">Pago en Oficina</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="type-membership" class="control-label font20px color-azul">Tipo de Membresía</label>
-                    <select class="form-control" id="type-membership" name="type-membership">
-                        <option value="" selected="selected">Seleccione...</option>';
-                            $memberships = $wpdb->get_results(
-                                "
-                                SELECT *
-                                FROM qm_membership
-                                "
-                            );
-                            if( $memberships ){
-                                foreach ($memberships as $membership) {
-                                    echo '<option value="';
-                                    echo( $membership->id ); 
-                                    echo '">';
-                                    echo( $membership->name );
-                                    echo'</option>';
-                                }
-                            }
-                        echo'
-                    </select>
-                </div>';
-                echo'
-                <div id="docs-container">
-                </div>
-                ';
-                echo '<p>&nbsp;</p>
-                <button type="button" class="btn btn-primary" name="submit">Registrar</button>
-                </form>
-                </div>
-    ';
-    echo'
-        <script type="text/javascript">
-        jQuery(document).on("ready",function(){       
-            jQuery("#type-membership").on( "change",function(){
-                var url = "";
-                jQuery.ajax({                        
-                   type: "POST",                 
-                   url: url,                     
-                   data: jQuery("#type-membership option:selected").val();, 
-                   success: function(data)             
-                   {
-                        jQuery("#docs-container").html(data);               
-                   }
-               });
-            });
-        });
-        </script>
-    ';
-    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
-        $documentsMem = $wpdb->get_results(
-            "
-            SELECT *
-            FROM qm_membership_document
-            WHERE membership_id = $idSelected
-            "
-        );
-        $documents = $wpdb->get_results(
-            "
-            SELECT *
-            FROM qm_document
-            "
-        );
-    
-        foreach( $documentsMem as $docMem ){
-            foreach( $documents as $docs ){
-                if( $docMem->document_id == $docs->id ){
-                    ?>
-                    <script>
-                        jQuery( "#docs-container" ).append(
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="<?php echo( $docs->name );  ?>">
-                                <label class="custom-file-label" for="customFile">Elija un archivo</label>
-                            </div>
-                        );
-                    </script>
-                    <?php
-                }
-            }
-        }
-
-    }
-
+    include_once( dirname( __FILE__ ) . '/views/wp-register.php' );
 }
 
 function registration_validation( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio )  {
@@ -761,7 +646,33 @@ function complete_registration() {
 }
 
 function custom_registration() {
-    if ( isset($_POST['submit'] ) ) {
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+        $idM = $_POST['idSelected'];
+        $documentsMem = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_membership_document
+            WHERE membership_id = $idM
+            "
+        );
+        $documents = $wpdb->get_results(
+            "
+            SELECT *
+            FROM qm_document
+            "
+        );
+        
+        $rendData = [];
+        
+        foreach( $documentsMem as $docMem ){
+            foreach( $documents as $docs ){
+                if( $docMem->document_id == $docs->id ){
+                    $rendData[]=$docs->id.":".$docs->name;
+                }
+            }
+        }
+        return inplode( ',', $rendData );
+    }elseif ( isset($_POST['submit'] ) ) {
         registration_validation(
         $_POST['username'],
         $_POST['password'],
