@@ -600,7 +600,7 @@ function registration_form( $username, $password, $email, $website, $first_name,
                 </div>
                 <div class="form-group">
                     <label for="type-membership" class="control-label font20px color-azul">Tipo de Pago</label>
-                    <select class="form-control" id="type-membership" name="type-membership">
+                    <select class="form-control" id="type-payment" name="type-membership">
                         <option value="#">Seleccione...</option>
                         <option value="1">Tarjeta de Crédito</option>
                         <option value="2">Pago en Oficina</option>
