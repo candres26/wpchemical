@@ -172,6 +172,10 @@ add_action( 'admin_head', 'remove_documentmenu_edit');
 
 add_action( 'admin_head', 'remove_membershipmenu_edit');
 
+add_action( 'wp_ajax_requestAjax', 'requestAjax' );
+
+add_action( 'wp_ajax_nopriv_requestAjax', 'requestAjax' );
+
 
 function remove_tagmenu_edit() {
     remove_submenu_page( 'index.php', 'editar_etiqueta' );
@@ -572,11 +576,15 @@ function delete_tag_own(){
     }
 }
 
-function registration_form( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio ) {
+// Formulario de Registro
+
+function registration_form( $username, $password, $fname, $lname, $email, $paytype, $membershiptype ) {
+    wp_enqueue_script( 'wp-documents-ajax', plugin_dir_url( __FILE__ ) . 'js/wp-documents-ajax.js', array('jquery') 	);
+    $includeJavascript = plugin_dir_url( __FILE__ ) . 'js/wp-documents-ajax.js';
     include_once( dirname( __FILE__ ) . '/views/wp-register.php' );
 }
 
-function registration_validation( $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio )  {
+function registration_validation( $username, $password, $fname, $lname, $email, $paytype, $membershiptype )  {
     global $reg_errors;
     $reg_errors = new WP_Error;
 
@@ -607,12 +615,6 @@ function registration_validation( $username, $password, $email, $website, $first
         $reg_errors->add( 'email', 'Email Already in use' );
     }
 
-    if ( ! empty( $website ) ) {
-        if ( ! filter_var( $website, FILTER_VALIDATE_URL ) ) {
-            $reg_errors->add( 'website', 'Website is not a valid URL' );
-        }
-    }
-
     if ( is_wp_error( $reg_errors ) ) {
  
         foreach ( $reg_errors->get_error_messages() as $error ) {
@@ -627,99 +629,78 @@ function registration_validation( $username, $password, $email, $website, $first
     }
 }
 
-function complete_registration() {
-    global $reg_errors, $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
-    if ( 1 > count( $reg_errors->get_error_messages() ) ) {
-        $userdata = array(
-        'user_login'    =>   $username,
-        'user_email'    =>   $email,
-        'user_pass'     =>   $password,
-        'user_url'      =>   $website,
-        'first_name'    =>   $first_name,
-        'last_name'     =>   $last_name,
-        'nickname'      =>   $nickname,
-        'description'   =>   $bio,
-        );
-        $user = wp_insert_user( $userdata );
-        echo 'Registration complete. Goto <a href="' . get_site_url() . '/wp-login.php">login page</a>.';   
-    }
-}
-
 function custom_registration() {
-    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
-        $idM = $_POST['idSelected'];
-        $documentsMem = $wpdb->get_results(
-            "
-            SELECT *
-            FROM qm_membership_document
-            WHERE membership_id = $idM
-            "
-        );
-        $documents = $wpdb->get_results(
-            "
-            SELECT *
-            FROM qm_document
-            "
-        );
-        
-        $rendData = [];
-        
-        foreach( $documentsMem as $docMem ){
-            foreach( $documents as $docs ){
-                if( $docMem->document_id == $docs->id ){
-                    $rendData[]=$docs->id.":".$docs->name;
-                }
-            }
-        }
-        return inplode( ',', $rendData );
-    }elseif ( isset($_POST['submit'] ) ) {
+    if ( isset($_POST['submit'] ) ) {
         registration_validation(
         $_POST['username'],
         $_POST['password'],
-        $_POST['email'],
-        $_POST['website'],
         $_POST['fname'],
         $_POST['lname'],
-        $_POST['nickname'],
-        $_POST['bio']
+        $_POST['email'],
+        $_POST['paytype'],
+        $_POST['membershiptype']
         );
          
         // sanitize user form input
-        global $username, $password, $email, $website, $first_name, $last_name, $nickname, $bio;
+        global $username, $password, $fname, $lname, $email, $paytype, $membershiptype;
         
         $username   =   sanitize_user( $_POST['username'] );
         $password   =   esc_attr( $_POST['password'] );
+        $fname =   sanitize_text_field( $_POST['fname'] );
+        $lname  =   sanitize_text_field( $_POST['lname'] );
         $email      =   sanitize_email( $_POST['email'] );
-        $website    =   esc_url( $_POST['website'] );
-        $first_name =   sanitize_text_field( $_POST['fname'] );
-        $last_name  =   sanitize_text_field( $_POST['lname'] );
-        $nickname   =   sanitize_text_field( $_POST['nickname'] );
-        $bio        =   esc_textarea( $_POST['bio'] );
+        $paytype   =   sanitize_text_field( $_POST['paytype'] );
+        $membershiptype        =   sanitize_text_field( $_POST['membershiptype'] );
+
+        //$fecha = date_create(); 
+        //echo date_timestamp_get($fecha);
  
-        // call @function complete_registration to create the user
-        // only when no WP_error is found
-        complete_registration(
-        $username,
-        $password,
-        $email,
-        $website,
-        $first_name,
-        $last_name,
-        $nickname,
-        $bio
+    }else{
+        registration_form(
+            $username,
+            $password,
+            $fname,
+            $lname,
+            $email,
+            $paytype,
+            $membershiptype
         );
     }
  
-    registration_form(
-        $username,
-        $password,
-        $email,
-        $website,
-        $first_name,
-        $last_name,
-        $nickname,
-        $bio
-        );
+}
+
+function requestAjax(){
+    global $wpdb;
+
+    $idM = $_POST["idSelected"];
+
+    $documentsMem = $wpdb->get_results(
+        "
+        SELECT *
+        FROM qm_membership_document
+        WHERE membership_id = $idM
+        "
+    );
+    $documents = $wpdb->get_results(
+        "
+        SELECT *
+        FROM qm_document
+        "
+    );
+    
+    $rendData = [];
+    
+    foreach( $documentsMem as $docMem ){
+        foreach( $documents as $docs ){
+            if( $docMem->document_id == $docs->id ){
+                $rendData[]=$docs->id.":".$docs->name;
+            }
+        }
+    }
+    
+    echo implode( ',', $rendData );
+    
+    die();
 }
 
 // Register a new shortcode: [cr_custom_registration]
@@ -732,4 +713,12 @@ function custom_registration_shortcode() {
     return ob_get_clean();
 }
 
+function document_ajax_enqueue() { 	
+    // Enqueue javascript on the frontend. 	
+    wp_enqueue_script( 'wp-documents-ajax', plugin_dir_url( __FILE__ ) . 'js/wp-documents-ajax.js', array('jquery') 	); 	
     
+    // The wp_localize_script allows us to output the ajax_url path for our script to use. 	
+    wp_localize_script( 'wp-documents-ajax', 'documentObject', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) 	); 
+} 
+
+add_action( 'wp_enqueue_scripts', 'document_ajax_enqueue' );
