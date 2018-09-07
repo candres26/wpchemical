@@ -34,7 +34,7 @@
         background-color: #0076a6;
       }
     </style>
-
+  <?php wp_head(); ?>
   </head>
 
   <body>

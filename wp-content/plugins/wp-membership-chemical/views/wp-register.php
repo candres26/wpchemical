@@ -4,20 +4,12 @@
 <div class="col-md-12 col-lg-12 col-sm-12" style="margin-top: 4em; margin-bottom: 4em;">
     <form action="<?php $_SERVER['REQUEST_URI']; ?>" method="post" id="form-register">
         <div class="form-group">
-            <label for="username" class="control-label font20px color-azul">Usuario</label>
-            <input type="text" class="form-control" name="username" value="<?php ( isset( $_POST['username'] ) ? $username : null ) ?>" placeholder="Escriba sus nombres">
-        </div>
-        <div class="form-group">
-            <label for="password" class="control-label font20px color-azul">Contraseña</label>
-            <input type="password" class="form-control" name="password" value="<?php ( isset( $_POST['password'] ) ? $password : null ); ?>">
-        </div>
-        <div class="form-group">
             <label for="fname" class="control-label font20px color-azul">Nombres</label>
-            <input type="text" class="form-control" name="fname" value="<?php ( isset( $_POST['fname']) ? $first_name : null ) ?>">
+            <input type="text" class="form-control" name="fname" value="<?php ( isset( $_POST['fname']) ? $fname : null ) ?>">
         </div>
         <div class="form-group">
             <label for="lname" class="control-label font20px color-azul">Apellidos</label>
-            <input type="text" class="form-control" name="lname" value="<?php ( isset( $_POST['lname']) ? $last_name : null ) ?>">
+            <input type="text" class="form-control" name="lname" value="<?php ( isset( $_POST['lname']) ? $lname : null ) ?>">
         </div>
         <div class="form-group">
             <label for="email" class="control-label font20px color-azul">Email</label>
@@ -54,7 +46,9 @@
                 ?>
             </select>
         </div>
-        <textarea name="documentsContent" id="documentsContent" cols="30" rows="10"></textarea>
+        <div id="panel-description" class="panel panel-default" style="display: none;">
+        </div>
+        <textarea name="documentsContent" id="documentsContent" cols="30" rows="10" style="display: none"></textarea>
         <p>&nbsp;</p>
     </form>
     <div id="docs-container">
@@ -76,13 +70,19 @@ function readyDocuments( data )
 {
     var fields = data.split(",");
     var code = "";
-    for( var i = 0; i < fields.length; i++ )
+    var description = "";
+
+    for( var i = 1; i < fields.length; i++ )
     {
         var content = fields[i].split(":");
-        code = code + '<div class="form-group"><label for="doc_'+ content[0] +'">'+ content[1] +'</label><input type="file" class="form-control-file" name="doc_'+ content[0] +'" id="doc_'+ content[0] +'" onchange="loadFile(event);"></div>';
+        code = code + '<div class="custom-file"><input type="file" class="form-control-file" name="doc_'+ content[0] +'" id="doc_'+ content[0] +'" onchange="loadFile(event);"><label for="doc_'+ content[0] +'">'+ content[1] +'</label></div>';
     }
-
     jQuery('#docs-container').html( code );
+    var contentDesc = fields[0].split(":");
+    description = '<!--<div class="panel-heading">'+ contentDesc[0] +'</div>--><div class="panel-body"><p>'+ contentDesc[1] +'</p></div>'
+    jQuery('#panel-description').css('display', 'block');
+    jQuery('#panel-description').html(description);
+
 }
 
 function loadFile(event) {

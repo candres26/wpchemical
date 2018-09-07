@@ -578,41 +578,26 @@ function delete_tag_own(){
 
 // Formulario de Registro
 
-function registration_form( $username, $password, $fname, $lname, $email, $paytype, $membershiptype ) {
+function registration_form( $fname, $lname, $email, $paytype, $membershiptype ) {
     wp_enqueue_script( 'wp-documents-ajax', plugin_dir_url( __FILE__ ) . 'js/wp-documents-ajax.js', array('jquery') 	);
     $includeJavascript = plugin_dir_url( __FILE__ ) . 'js/wp-documents-ajax.js';
     include_once( dirname( __FILE__ ) . '/views/wp-register.php' );
 }
 
-function registration_validation( $username, $password, $fname, $lname, $email, $paytype, $membershiptype )  {
+function registration_validation( $fname, $lname, $email, $paytype, $membershiptype )  {
     global $reg_errors;
     $reg_errors = new WP_Error;
 
-    if ( empty( $username ) || empty( $password ) || empty( $email ) ) {
-        $reg_errors->add('field', 'Required form field is missing');
-    }
-
-    if ( 4 > strlen( $username ) ) {
-        $reg_errors->add( 'username_length', 'Username too short. At least 4 characters is required' );
-    }
-
-    if ( username_exists( $username ) )
-        $reg_errors->add('user_name', 'Sorry, that username already exists!');
-
-    if ( ! validate_username( $username ) ) {
-        $reg_errors->add( 'username_invalid', 'Sorry, the username you entered is not valid' );
-    }
-
-    if ( 5 > strlen( $password ) ) {
-        $reg_errors->add( 'password', 'Password length must be greater than 5' );
+    if ( empty( $fname ) || empty( $lname ) || empty( $email ) ) {
+        $reg_errors->add('field', 'El campo requerido esta vacío');
     }
 
     if ( !is_email( $email ) ) {
-        $reg_errors->add( 'email_invalid', 'Email is not valid' );
+        $reg_errors->add( 'email_invalid', 'Email inválido' );
     }
 
     if ( email_exists( $email ) ) {
-        $reg_errors->add( 'email', 'Email Already in use' );
+        $reg_errors->add( 'email', 'Este Email ya esta en uso' );
     }
 
     if ( is_wp_error( $reg_errors ) ) {
@@ -622,6 +607,7 @@ function registration_validation( $username, $password, $fname, $lname, $email, 
             echo '<div>';
             echo '<strong>ERROR</strong>:';
             echo $error . '<br/>';
+            echo $fname;
             echo '</div>';
              
         }
@@ -632,8 +618,6 @@ function registration_validation( $username, $password, $fname, $lname, $email, 
 function custom_registration() {
     if ( isset($_POST['submit'] ) ) {
         registration_validation(
-        $_POST['username'],
-        $_POST['password'],
         $_POST['fname'],
         $_POST['lname'],
         $_POST['email'],
@@ -642,10 +626,8 @@ function custom_registration() {
         );
          
         // sanitize user form input
-        global $username, $password, $fname, $lname, $email, $paytype, $membershiptype;
+        global $fname, $lname, $email, $paytype, $membershiptype;
         
-        $username   =   sanitize_user( $_POST['username'] );
-        $password   =   esc_attr( $_POST['password'] );
         $fname =   sanitize_text_field( $_POST['fname'] );
         $lname  =   sanitize_text_field( $_POST['lname'] );
         $email      =   sanitize_email( $_POST['email'] );
@@ -654,11 +636,8 @@ function custom_registration() {
 
         //$fecha = date_create(); 
         //echo date_timestamp_get($fecha);
- 
     }else{
         registration_form(
-            $username,
-            $password,
             $fname,
             $lname,
             $email,
@@ -673,6 +652,14 @@ function requestAjax(){
     global $wpdb;
 
     $idM = $_POST["idSelected"];
+
+    $Memb = $wpdb->get_row(
+        "
+        SELECT *
+        FROM qm_membership
+        WHERE id= $idM
+        "
+    );
 
     $documentsMem = $wpdb->get_results(
         "
@@ -689,6 +676,8 @@ function requestAjax(){
     );
     
     $rendData = [];
+
+    $rendData[]=$Memb->name.":".$Memb->description;
     
     foreach( $documentsMem as $docMem ){
         foreach( $documents as $docs ){

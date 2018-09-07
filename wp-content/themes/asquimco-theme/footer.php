@@ -26,5 +26,5 @@
     <script src="<?php bloginfo('template_url'); ?>/bootstrap/js/bootstrap.js"></script>
     <script src="<?php bloginfo('template_url'); ?>/js/calendario.js"></script>
   
-
+  <?php wp_footer(); ?>
 </body></html>
