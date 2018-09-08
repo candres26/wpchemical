@@ -62,7 +62,7 @@
                                 <td>
                                     <?php 
                                         if( $request->payment_option == '1' ){
-                                            echo ( 'Tarjeta de Crédito' );
+                                            echo ( 'Pago en Línea' );
                                         }elseif( $request->payment_option == '2' ){
                                             echo ( 'Pago en Oficina' );
                                         }else{

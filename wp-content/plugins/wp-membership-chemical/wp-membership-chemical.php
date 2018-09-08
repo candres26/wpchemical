@@ -619,21 +619,22 @@ function custom_registration() {
     global $wpdb, $fname, $lname, $email, $paytype, $membershiptype;
 
     if ( isset($_POST['email'] ) ) {
-        registration_validation(
+        /*registration_validation(
         $_POST['fname'],
         $_POST['lname'],
         $_POST['email'],
         $_POST['paytype'],
         $_POST['membershiptype']
-        );
+        );*/
          
         // sanitize user form input
         
-        $fname =   sanitize_text_field( $_POST['fname'] );
-        $lname  =   sanitize_text_field( $_POST['lname'] );
-        $email      =   sanitize_email( $_POST['email'] );
-        $paytype   =   sanitize_text_field( $_POST['paytype'] );
-        $membershiptype        =   sanitize_text_field( $_POST['membershiptype'] );
+        $fname = sanitize_text_field( $_POST['fname'] );
+        $lname = sanitize_text_field( $_POST['lname'] );
+        $email = sanitize_email( $_POST['email'] );
+        $paytype = sanitize_text_field( $_POST['paytype'] );
+        $membershiptype = sanitize_text_field( $_POST['membershiptype'] );
+        $documentsContent = sanitize_text_field( $_POST['documentsContent'] );
 
         $wpdb->insert(
             'qm_user',
@@ -652,9 +653,13 @@ function custom_registration() {
         );
 
         $user_id = $wpdb->insert_id;
-        $dateNow = date("d-M-Y");
         $date = new DateTime();
-        echo $date->getTimestamp();
+        $dateNow = $date->format("Y-m-d");
+        $expirationDate = $date->add( new DateInterval('P30D'))->format('Y-m-d');
+        
+        $token = $date->getTimestamp();
+        $numeroAl = rand(1000, 9999);
+        $token = $token ."-".$numeroAl;
 
         $wpdb->insert(
             'qm_request',
@@ -663,6 +668,29 @@ function custom_registration() {
                 'membership_id'=> $membershiptype,
                 'payment_option'=> $paytype,
                 'create_date'=> $dateNow,
+                'expiration_date'=> $expirationDate,
+                'state'=> '1',
+                'token'=> $token
+            ),
+            array(
+                '%d',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            )
+        );
+
+        $request_id = $wpdb->insert_id;
+
+        $wpdb->insert(
+            'qm_request_document',
+            array(
+                'request_id'=> $request_id,
+                'document_id'=> $lname,
+                'url'=> $url
             ),
             array(
                 '%s',
@@ -671,6 +699,7 @@ function custom_registration() {
                 '%s'
             )
         );
+
         // wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
 
     }else{

@@ -49,7 +49,7 @@
         </div>
         <div id="panel-description" class="panel panel-info" style="display: none;">
         </div>
-        <textarea name="documentsContent" id="documentsContent" cols="30" rows="10" style="display: none"></textarea>
+        <textarea name="documentsContent" id="documentsContent" cols="30" rows="10"></textarea>
     </form>
     <div id="docs-container" style="display: none;">
     </div>
@@ -109,12 +109,12 @@ function loadFile(event)
         fileReader.readAsDataURL(fileToLoad);     
         
     } 
+    jQuery("#documentsContent").val(JSON.stringify($documentsObject));
 }
 
 
 function sendForm()
 {
-    jQuery("#documentsContent").val(JSON.stringify($documentsObject));
     jQuery("#form-register").submit();
 }
 </script>
