@@ -588,7 +588,7 @@ function registration_validation( $fname, $lname, $email, $paytype, $membershipt
     global $reg_errors;
     $reg_errors = new WP_Error;
 
-    if ( empty( $fname ) || empty( $lname ) || empty( $email ) ) {
+    if ( empty( $fname ) || empty( $lname ) || empty( $email )  || empty( $paytype ) || empty( $membershiptype )) {
         $reg_errors->add('field', 'El campo requerido esta vacío');
     }
 
@@ -616,7 +616,9 @@ function registration_validation( $fname, $lname, $email, $paytype, $membershipt
 }
 
 function custom_registration() {
-    if ( isset($_POST['submit'] ) ) {
+    global $wpdb, $fname, $lname, $email, $paytype, $membershiptype;
+
+    if ( isset($_POST['email'] ) ) {
         registration_validation(
         $_POST['fname'],
         $_POST['lname'],
@@ -626,7 +628,6 @@ function custom_registration() {
         );
          
         // sanitize user form input
-        global $fname, $lname, $email, $paytype, $membershiptype;
         
         $fname =   sanitize_text_field( $_POST['fname'] );
         $lname  =   sanitize_text_field( $_POST['lname'] );
@@ -634,8 +635,44 @@ function custom_registration() {
         $paytype   =   sanitize_text_field( $_POST['paytype'] );
         $membershiptype        =   sanitize_text_field( $_POST['membershiptype'] );
 
-        //$fecha = date_create(); 
-        //echo date_timestamp_get($fecha);
+        $wpdb->insert(
+            'qm_user',
+            array(
+                'first_name'=> $fname,
+                'last_name'=> $lname,
+                'email'=> $email,
+                'state'=> '1'
+            ),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            )
+        );
+
+        $user_id = $wpdb->insert_id;
+        $dateNow = date("d-M-Y");
+        $date = new DateTime();
+        echo $date->getTimestamp();
+
+        $wpdb->insert(
+            'qm_request',
+            array(
+                'user_id'=> $user_id,
+                'membership_id'=> $membershiptype,
+                'payment_option'=> $paytype,
+                'create_date'=> $dateNow,
+            ),
+            array(
+                '%s',
+                '%s',
+                '%s',
+                '%s'
+            )
+        );
+        // wp_redirect( esc_url( admin_url( 'admin.php' ) ) . '?page=crear_nueva_membresia&status=0' );
+
     }else{
         registration_form(
             $fname,
