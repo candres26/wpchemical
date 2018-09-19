@@ -72,8 +72,8 @@
     </div>
   </div>
 
-
-    <nav class="navbar nav-azul">
+  <div class="container" style="width: 100%; padding-left: 0px; padding-right: 0px; color: #ffffff;">
+    <nav class="navbar navbar-inverse nav-azul">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -86,7 +86,7 @@
         </div>
 
         <?php wp_nav_menu(array(
-
+          
           'theme_location' => 'menu',
           'container' => 'div',
           'container_class' => 'collapse navbar-collapse',
@@ -94,8 +94,10 @@
           'items_wrap' => '<ul class="nav navbar-nav">%3$s</ul>',
           'menu_class' => '',
           'walker' => new wp_bootstrap_navwalker()
-
+          
         )); ?>
 
+        </div>
       </div>
     </nav>
+  </div>
