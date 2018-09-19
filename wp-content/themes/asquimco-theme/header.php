@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="<?php bloginfo('language'); ?>">
+<head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<?php bloginfo('description') ?>">
     <meta name="author" content="angiespitia">
     <!-- <link rel="icon" href="http://getbootstrap.com/docs/3.3/favicon.ico"> -->
 
-    <title> </title>
+    <title><?php bloginfo('name'); ?></title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php bloginfo('template_url'); ?>/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -80,7 +82,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand border-right a-nav" href="https://asquimco.org/"><span class="glyphicon glyphicon-home"></span></a>
+          <a class="navbar-brand border-right a-nav" href="<?php bloginfo('url'); ?>"><span class="glyphicon glyphicon-home"></span></a>
         </div>
 
         <?php wp_nav_menu(array(

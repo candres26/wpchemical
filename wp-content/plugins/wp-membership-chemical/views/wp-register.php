@@ -83,6 +83,8 @@ function readyDocuments( data )
     {
         var content = fields[i].split(":");
         code = code + '<div class="custom-file"><label for="doc_'+ content[0] +'">'+ content[1] +'</label><input type="file" class="form-control-file" name="doc_'+ content[0] +'" id="doc_'+ content[0] +'" onchange="loadFile(event);"></div>';
+        // Input File Boostrap 4
+        // '<div class="custom-file"><input type="file" class="custom-file-input" name="doc_'+ content[0] +'" id="doc_'+ content[0] +'" onchange="loadFile(event);" lang="es"><label class="custom-file-label" for="doc_'+ content[0] +'">'+ content[1] +'</label></div><br/>';
     }
     jQuery('#docs-container').html( code );
     jQuery('#docs-container').css('display', 'block');

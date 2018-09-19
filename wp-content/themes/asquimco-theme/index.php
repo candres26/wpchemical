@@ -98,7 +98,7 @@
     <div class="noticias-box col-md-12 col-lg-12 col-sm-12">
       <div class="div-paddings-0px col-md-12 col-lg-12 col-sm-12">
         <div class="box1 col-md-2 col-lg-2 col-sm-6">
-          <p><i class="fa fa-newspaper-o"></i> Noticias</p>
+          <p><i class="fa fa-newspaper-o"></i> Publicaciones</p>
         </div>
         <div class="col-md-7 col-lg-7 col-sm-0">
           <br>
@@ -111,7 +111,17 @@
 
           <?php 
           // the query
-          $the_query = new WP_Query( array( 'category_name' => 'Noticias,noticias', 'posts_per_page'=>3 ) ); ?>
+          //$the_query = new WP_Query( array( 'category_name' => 'Noticias,noticias', 'posts_per_page'=>4 ) ); 
+          
+          // WP_Query arguments
+          $args = array(
+            'post_type'              => array( 'post' ),
+            'posts_per_page'         => '3',
+          );
+
+          // The Query
+          $the_query = new WP_Query( $args );
+          ?>
 
           <?php if ( $the_query->have_posts() ) : ?>
 
