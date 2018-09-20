@@ -70,29 +70,20 @@
         </div>
       </div>
       <div class="col-sm-12 col-lg-4 col-md-4 div-paddings-0px">
-          <div class="table-responsive" style="height: 450px;overflow: hidden;">
-            <table id="calendario" class="table">
-
-              <caption></caption>
-              
-                <thead class="col-sm-12 col-lg-12 col-md-12 fondo-calendar">
-
-                  <tr>
-
-                    <th><p>Lun</p></th><th><p>Mar</p></th><th><p>Mie</p></th><th><p>Jue</p></th><th><p>Vie</p></th><th><p>Sab</p></th><th><p>Dom</p></th>
-
-                  </tr>
-
-                </thead>
-
-                <tbody class="col-sm-12 col-lg-12 col-md-12 fondo-calendar">
-
-                </tbody>
-            </table>
-          </div>
-
+        <div class="table-responsive" style="height: 450px;overflow: hidden;">
+          <table id="calendario" class="table">
+            <caption></caption>
+              <thead class="col-sm-12 col-lg-12 col-md-12 fondo-calendar">
+                <tr>
+                  <th><p>Lun</p></th><th><p>Mar</p></th><th><p>Mie</p></th><th><p>Jue</p></th><th><p>Vie</p></th><th><p>Sab</p></th><th><p>Dom</p></th>
+                </tr>
+              </thead>
+              <tbody class="col-sm-12 col-lg-12 col-md-12 fondo-calendar"></tbody>
+          </table>
+        </div>
       </div>
     </div>
+  </div>
 
     <!-- noticias -->
     <div class="noticias-box col-md-12 col-lg-12 col-sm-12">

@@ -125,11 +125,11 @@ function mostrarCalendario(year,month)
  
 	if( document.getElementById("calendario") != null )
 	{
-		document.getElementById("calendario").getElementsByTagName("caption")[0].innerHTML="<div class='div-paddings-0px col-md-12 col-lg-12 col-sm-12'>"+
-		"<div class='col-md-2 col-lg-2 col-sm-2' style='transform: scaleY(2.0);margin-top: 4%;'><a onclick='mostrarCalendario("+prevYear+","+prevMonth+")'><span class='glyphicon glyphicon-chevron-left '></span></a></div>"+
-		"<div class='div-paddings-0px col-md-4 col-lg-4 col-sm-4'>"+actual.getDate()+"</div>"+
-		"<div class='div-paddings-0px col-md-4 col-lg-4 col-sm-4 text-center'><span class='mes'>"+meses[month-1]+"</span><br><span class='anio'>"+year+"</span></div>"+
-		"<div class='col-md-2 col-lg-2 col-sm-2' style='transform: scaleY(2.0);margin-top: 4%;'><a onclick='mostrarCalendario("+nextYear+","+nextMonth+")'><span class='glyphicon glyphicon-chevron-right '></span></a></div>"+
+		document.getElementById("calendario").getElementsByTagName("caption")[0].innerHTML="<div class='div-paddings-0px col-md-12 col-lg-12'>"+
+		"<div id='arrowLeft' class='col-md-2 col-lg-2' style='transform: scaleY(2.0);margin-top: 4%;'><a onclick='mostrarCalendario("+prevYear+","+prevMonth+")'><span class='glyphicon glyphicon-chevron-left '></span></a></div>"+
+		"<div id='calendarDay' class='div-paddings-0px col-md-4 col-lg-4'>"+actual.getDate()+"</div>"+
+		"<div id='calendarMonth' class='div-paddings-0px col-md-4 col-lg-4 text-center'><span class='mes'>"+meses[month-1]+"</span><br><span class='anio'>"+year+"</span></div>"+
+		"<div id='arrowRight' class='col-md-2 col-lg-2' style='transform: scaleY(2.0);margin-top: 4%;'><a onclick='mostrarCalendario("+nextYear+","+nextMonth+")'><span class='glyphicon glyphicon-chevron-right '></span></a></div>"+
 		"</div>";
 	
 		document.getElementById("calendario").getElementsByTagName("tbody")[0].innerHTML=resultado;

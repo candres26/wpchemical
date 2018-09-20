@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <div class="container" style="width: 100%; padding-left: 0px; padding-right: 0px; color: #ffffff;">
+  <div class="container" style="width: 100%; padding-left: 0px; padding-right: 0px;">
     <nav class="navbar navbar-inverse nav-azul">
       <div class="container">
         <div class="navbar-header">

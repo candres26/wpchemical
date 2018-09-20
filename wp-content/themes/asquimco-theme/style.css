@@ -377,10 +377,10 @@ a{
     /*height: 100%;*/
 
 }
-
+/*
 #calendario caption div:nth-child(1) {
 
-}
+}*/
 
 #calendario caption div:nth-child(2) {
     font-size: 50px;
@@ -446,4 +446,23 @@ a{
 #calendario .fondo-calendar{
     background-image: url(img/fondo-calendario.png);
     background-size: 100%;
+}
+
+@media only screen and ( max-width: 991px ){
+    #calendario caption #arrowLeft{
+        width: 10%;
+        float: left;
+    }
+    #calendario caption #calendarDay{
+        width: 30%;
+        float: left;
+    }
+    #calendario caption #calendarMonth{
+        width: 50%;
+        float: left;
+    }
+    #calendario caption #arrowRight{
+        width: 10%;
+        float: left;
+    }
 }
