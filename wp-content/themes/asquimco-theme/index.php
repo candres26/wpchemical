@@ -69,7 +69,7 @@
             </div>
         </div>
       </div>
-      <div class="col-sm-12 col-lg-4 col-md-4 div-paddings-0px">
+    <div class="col-sm-12 col-lg-4 col-md-4 div-paddings-0px">
         <div class="table-responsive" style="height: 450px;overflow: hidden;">
           <table id="calendario" class="table">
             <caption></caption>

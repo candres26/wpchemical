@@ -1,0 +1,14 @@
+@media screen {
+    .tableWrap{
+        border: 3px solid #000;
+        border-collapse: collapse;
+        width: 80%;
+        height: 500px;
+    }
+
+    .tableWrap td{
+        border: solid 2px #000;
+        border-width: thin;
+        padding-left: 8px;
+    }
+}
